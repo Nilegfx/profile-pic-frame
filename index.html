@@ -275,7 +275,7 @@
       Konva.Image.fromURL(src, function(frameNode) {
         // D-04: Remove old frame if exists
         if (state.frameImage) {
-          state.frameImage.remove();
+          state.frameImage.destroy();
         }
 
         // D-05: Frame fills 500×500 stage at top-left
