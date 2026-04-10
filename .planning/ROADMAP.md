@@ -48,21 +48,20 @@
   - Plan 2.3: Basic layered preview (uploaded image + selected frame overlay, static positioning)
 
 ### Phase 3: Interactive Editing
-**Goal**: Users can drag, zoom, and reset their photo to fit perfectly within the frame circular area
+**Goal**: Users can independently scale both the photo and the frame using sliders, with both centered and aspect ratio locked
 **Depends on**: Phase 2
-**Requirements**: EDT-01, EDT-02, EDT-03, EDT-04, PRV-01
+**Requirements**: EDT-01, EDT-02, EDT-03, PRV-01
 **Success Criteria** (what must be TRUE):
-  1. User can drag the photo with mouse (desktop) or touch (mobile) to reposition it within the frame
-  2. User can zoom the photo with a slider control, with aspect ratio staying locked
-  3. When an image is uploaded, it auto-fits to roughly fill the frame circular area (smart default)
-  4. User can click a reset button to restore photo to the auto-fit position and zoom
-  5. Preview updates in real-time as user drags or zooms (no lag, smooth interaction)
+  1. User can scale the profile photo with a slider, aspect ratio stays locked
+  2. User can scale the frame with a separate slider, aspect ratio stays locked
+  3. Both images are centered in the preview by default
+  4. Preview updates in real-time as either slider moves
 **Plans**: TBD
 **UI hint**: yes
 
 **Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 3.1: Konva Stage + draggable photo Image node + zoom slider controlling scale state
-  - Plan 3.2: Auto-fit logic on upload + reset button functionality
+  - Plan 3.1: Konva Stage with two centered Image nodes (photo + frame), each driven by a scale state value
+  - Plan 3.2: Two sliders wired to photoScale and frameScale state; both images stay centered on scale change
 
 ### Phase 4: Canvas Export
 **Goal**: Users can download a high-quality PNG with their photo perfectly composited inside the selected frame

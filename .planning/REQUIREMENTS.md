@@ -19,14 +19,13 @@
 
 ### Editing
 
-- [ ] **EDT-01**: User can drag to reposition the photo layer within the frame (mouse and touch)
-- [ ] **EDT-02**: User can zoom/scale the photo using a slider, with aspect ratio locked
-- [ ] **EDT-03**: On image upload, photo is auto-fitted to roughly fill the frame circular area
-- [ ] **EDT-04**: User can reset photo position and zoom to the auto-fit default
+- [ ] **EDT-01**: User can scale the profile photo using a slider, aspect ratio locked
+- [ ] **EDT-02**: User can scale the frame using a slider, aspect ratio locked
+- [ ] **EDT-03**: Both images are centered by default when loaded
 
 ### Preview
 
-- [ ] **PRV-01**: User sees a real-time preview of the photo composited with the selected frame while editing
+- [ ] **PRV-01**: User sees a real-time preview of both images composited together as they adjust the sliders
 
 ### Download
 
@@ -77,15 +76,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDT-01 | Phase 3 | Pending |
 | EDT-02 | Phase 3 | Pending |
 | EDT-03 | Phase 3 | Pending |
-| EDT-04 | Phase 3 | Pending |
 | PRV-01 | Phase 3 | Pending |
 | DWN-01 | Phase 4 | Pending |
 | DWN-02 | Phase 4 | Pending |
 | DWN-03 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 14 total
-- Mapped to phases: 14 (100%)
+- v1 requirements: 13 total
+- Mapped to phases: 13 (100%)
 - Unmapped: 0 ✓
 
 ---
