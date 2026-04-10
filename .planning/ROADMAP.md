@@ -73,17 +73,19 @@ Plans:
 **Depends on**: Phase 3
 **Requirements**: DWN-01, DWN-02, DWN-03
 **Success Criteria** (what must be TRUE):
-  1. Clicking Download triggers `stage.toDataURL({ pixelRatio: window.devicePixelRatio })` and downloads a `.png` file
-  2. Downloaded PNG is sharp on retina displays (pixelRatio applied)
-  3. Frame transparency is preserved (PNG alpha channel intact, no white fill)
-  4. Photo layer is below frame layer in the Konva layer/node order
-  5. No `SecurityError` (tainted canvas) — all images loaded from same origin or data URIs
-**Plans**: TBD
+  1. Download button (split-button with 1×/2× picker) triggers download of composited PNG
+  2. Downloaded PNG is sharp at 2× (retina) when user selects 2×
+  3. Frame transparency preserved (PNG alpha, no white fill)
+  4. Photo layer below frame layer in Konva layer order
+  5. No SecurityError (tainted canvas) — all images loaded from same origin or data URIs
+  6. Download button disabled when no photo uploaded, enabled when photo loads
+  7. Split-button: main area shows "Download (1×)" / "Download (2×)", arrow opens dropdown
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard
+
 **UI hint**: yes
-
-**Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 4.1: Download button handler calls `stage.toDataURL(...)`, creates an `<a>` with `download="profile.png"`, clicks it; verify layer order (photo below frame) and retina output
-
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
