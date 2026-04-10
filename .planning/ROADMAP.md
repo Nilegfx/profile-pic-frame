@@ -62,7 +62,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md — Wire photo slider for real-time scaling, reset on upload, hide frame slider (EDT-01, EDT-03, PRV-01)
+- [x] 03-01-PLAN.md — Wire photo slider for real-time scaling, reset on upload, hide frame slider (EDT-01, EDT-03, PRV-01)
 
 **UI hint**: yes
 
