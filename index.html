@@ -401,6 +401,36 @@
       reader.readAsDataURL(file);
     });
 
+    // Wire Photo Size slider for real-time scaling (Phase 3)
+    const photoSlider = document.getElementById('photo-scale');
+
+    photoSlider.addEventListener('input', function(event) {
+      const scale = parseFloat(event.target.value); // 0.5 to 2.0
+      const imageNode = state.photoImage;
+
+      // Guard: no photo loaded yet
+      if (!imageNode) return;
+
+      // Apply uniform scale (preserves aspect ratio per EDT-01)
+      imageNode.scaleX(scale);
+      imageNode.scaleY(scale);
+
+      // Recalculate offset to maintain centered position (per D-04)
+      const naturalWidth = imageNode.width();   // Original pixel width (no scale)
+      const naturalHeight = imageNode.height(); // Original pixel height (no scale)
+
+      imageNode.offset({
+        x: naturalWidth * scale / 2,
+        y: naturalHeight * scale / 2
+      });
+
+      // Update state (per D-06)
+      state.photoScale = scale;
+
+      // Redraw with frame-rate throttling (per D-10)
+      photoLayer.batchDraw();
+    });
+
     // Log initialization success
     console.log('Konva Stage initialized:', {
       width: stage.width(),
