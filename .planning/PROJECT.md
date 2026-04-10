@@ -38,11 +38,11 @@ User uploads photo, picks frame, adjusts fit, downloads result — in under a mi
 - User will supply the two actual frame PNGs — placeholder frames used during development
 - Output dimensions = whatever the user ends up with after resize/reposition (proportions locked)
 - The frame is a PNG with partial and full transparency regions; the profile photo sits "inside" the circular transparent area of the frame
-- Stack: React + Vite, react-easy-crop or similar for the crop/resize UX, HTML5 Canvas for compositing and download
+- Stack: React + Vite + react-konva (interactive canvas — drag, scale, export) + use-image (image loading hook)
 
 ## Constraints
 
-- **Tech stack**: React + Vite only — no framework mixing, no non-React canvas libs
+- **Tech stack**: React + Vite + react-konva — no non-React canvas libs outside of Konva ecosystem
 - **Timeline**: 2-3 day campaign window — ship fast, iterate if needed
 - **Client-only**: Zero server requirements — must run as a static file host or even `npm run dev`
 - **Libraries**: Popular, well-maintained React libraries only (high npm downloads, good docs)
@@ -52,7 +52,8 @@ User uploads photo, picks frame, adjusts fit, downloads result — in under a mi
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | React + Vite (not single HTML) | User preference; enables proper library ecosystem | — Pending |
-| Client-side only compositing via Canvas | Privacy + simplicity; no backend needed | — Pending |
+| react-konva for canvas layer | User decision; provides drag/zoom/export in one declarative React API, eliminating need for react-image-crop + manual canvas | — Pending |
+| Client-side only compositing via Konva Stage | Privacy + simplicity; stage.toDataURL() handles export | — Pending |
 | Two static frames at launch | Campaign-scoped, can swap PNGs easily | — Pending |
 | Aspect-ratio-locked resize | User explicitly requested proportion preservation | — Pending |
 

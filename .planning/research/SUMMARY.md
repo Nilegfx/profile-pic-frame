@@ -7,11 +7,11 @@
 
 ## Executive Summary
 
-This is a client-side image compositing tool — a category dominated by simple, single-purpose apps like Twibbon and Canva frame generators. The recommended approach is React 18 + Vite 6 with minimal dependencies: react-image-crop (11.x) for interactive cropping and native HTML5 Canvas API for final compositing. This stack prioritizes simplicity over flexibility, trading off advanced features for speed and maintainability suitable for a 2-3 day campaign.
+This is a client-side image compositing tool — a category dominated by simple, single-purpose apps like Twibbon and Canva frame generators. **Stack decision (user override):** React 18 + Vite 6 + **react-konva** for interactive canvas rendering. react-konva replaces both react-image-crop and the manual native Canvas approach — it provides draggable image nodes, built-in transform/scale, automatic retina scaling, and stage-level PNG export in a fully declarative React API.
 
-The architecture is straightforward: a single App component orchestrates state (uploaded image, selected frame, crop parameters, zoom), delegating to 4-5 stateless child components. The key architectural pattern is lazy canvas compositing — only composite layers when the user clicks download, not during interactive editing. This avoids performance overhead since react-image-crop provides visual preview without canvas rendering.
+The architecture is straightforward: a single App component orchestrates state (uploaded image, selected frame, photo position/scale), delegating to child components. The Konva `<Stage>` serves as both the live preview and the export surface — no separate offscreen canvas needed. The user drags and scales the photo node directly on the stage; clicking download calls `stage.toDataURL()`.
 
-The critical risks center on Canvas API gotchas: tainted canvas from cross-origin image handling (breaks download entirely), blurry output on retina displays (poor quality), memory leaks from Object URLs (degrades over time), and wrong composite operations (incorrect layer stacking). All are preventable with established patterns: avoid crossOrigin on FileReader data URLs, scale canvas by devicePixelRatio, revoke Object URLs in cleanup functions, and draw photo before frame with default source-over compositing.
+The critical risks shift slightly with react-konva: tainted canvas from cross-origin images is still the main concern (use FileReader, not `<img>` with crossOrigin), and layer ordering must be correct (photo node below frame node). react-konva handles devicePixelRatio automatically via the `pixelRatio` option on export.
 
 ## Key Findings
 
@@ -20,13 +20,13 @@ The critical risks center on Canvas API gotchas: tainted canvas from cross-origi
 The research converges on a minimal dependency stack optimized for speed of development and bundle size. Vite 6 provides zero-config React setup with instant HMR. react-image-crop (5KB gzipped, actively maintained through April 2025) handles interactive cropping with aspect ratio locking built-in, avoiding heavier alternatives like react-easy-crop (unnecessary zoom/rotate features) or react-cropper (jQuery-era architecture). Native Canvas API suffices for two-layer static compositing — canvas frameworks like react-konva (100KB+) or Fabric.js (200KB+) are overkill for this use case.
 
 **Core technologies:**
-- **React 18.3+ + Vite 6**: Modern development environment — zero-config, fast HMR, optimized builds, concurrent features for canvas integration
-- **react-image-crop 11.x**: Interactive cropping UI — lightweight (5KB), aspect ratio locking, keyboard accessible, no dependencies
-- **HTML5 Canvas API**: Layer compositing and export — browser-native, zero dependencies, sufficient for static two-layer overlay
-- **Native File API**: Upload handling — FileReader for data URLs, File input validation, no library needed
-- **TypeScript 5.6+**: Optional type safety — catches bugs early, better IDE support, minimal overhead
+- **React 18.3+ + Vite 6**: Modern development environment — zero-config, fast HMR, optimized builds
+- **react-konva + konva**: Interactive canvas — draggable image nodes, built-in transforms, auto retina scaling, stage export
+- **use-image**: Tiny companion hook (by Konva team) for loading images into Konva nodes
+- **Native File API**: Upload handling — FileReader for data URLs, no library needed
+- **TypeScript 5.6+**: Optional type safety — catches bugs early, better IDE support
 
-**Total bundle size:** ~150KB gzipped (React 45KB + react-image-crop 5KB + app code). Setup time under 5 minutes via `npm create vite@latest`.
+**Total bundle size:** ~350KB gzipped (React 45KB + konva/react-konva ~200KB + use-image 2KB + app code). Setup: `npm install react-konva konva use-image`.
 
 ### Expected Features
 

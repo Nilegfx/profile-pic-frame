@@ -26,8 +26,8 @@
 **UI hint**: yes
 
 **Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 1.1: Vite setup + App scaffold with state structure
-  - Plan 1.2: Component shells (ImageUploader, FramePicker, ImageEditor, DownloadButton) with prop interfaces
+  - Plan 1.1: Vite setup + install react-konva/konva/use-image + App scaffold with state structure
+  - Plan 1.2: Component shells (ImageUploader, FramePicker, KonvaEditor, DownloadButton) with prop interfaces
 
 ### Phase 2: Upload & Frame Selection
 **Goal**: Users can upload their photo and select between two campaign frames, seeing a basic preview
@@ -61,7 +61,7 @@
 **UI hint**: yes
 
 **Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 3.1: react-image-crop integration replacing static preview, controlled crop/zoom state
+  - Plan 3.1: Konva Stage + draggable photo Image node + zoom slider controlling scale state
   - Plan 3.2: Auto-fit logic on upload + reset button functionality
 
 ### Phase 4: Canvas Export
@@ -78,8 +78,8 @@
 **UI hint**: yes
 
 **Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 4.1: Offscreen canvas setup with getCroppedImg utility and retina scaling (devicePixelRatio)
-  - Plan 4.2: Layer compositing (draw cropped photo, then frame) and toBlob() export with download trigger
+  - Plan 4.1: Wire stageRef to DownloadButton + call stage.toDataURL({ pixelRatio: devicePixelRatio }) + trigger download
+  - Plan 4.2: Verify transparency, layer order (photo below frame), and retina sharpness; add loading state
 
 ## Progress
 

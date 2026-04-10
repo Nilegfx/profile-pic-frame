@@ -27,93 +27,50 @@ npm install
 
 ---
 
-### Image Crop/Resize UI
+### Canvas Interaction & Compositing
 
 | Technology | Version | Purpose | Why |
 |------------|---------|---------|-----|
-| react-image-crop | ^11.0.0 | User photo resize/reposition | Lightest (<5KB gzip), zero deps, actively maintained (Apr 2025 release), supports aspect-ratio lock, keyboard accessible |
+| react-konva | ^18.2.10 | Interactive canvas layer — drag, zoom, compositing, export | Declarative React bindings for Konva.js; handles draggable nodes, transforms, retina scaling, and stage export out of the box |
+| konva | ^9.x | Peer dependency of react-konva | Required by react-konva |
 
-**Why react-image-crop over alternatives:**
+**Why react-konva (user decision):**
 
-| Library | Pros | Cons | Verdict |
-|---------|------|------|---------|
-| **react-image-crop** ✅ | <5KB gzip, no dependencies, aspect ratio lock built-in, fully keyboard accessible (a11y), actively maintained (April 2025 release) | Less feature-rich than competitors | **RECOMMENDED** - Perfect for simple use case, minimal bundle size |
-| react-easy-crop | Smoother touch interactions, zoom/rotate support, 400+ commits | Heavier bundle, unnecessary features (zoom/rotate not in requirements), modal display bugs | Overkill for this use case |
-| react-cropper | Wraps Cropper.js (jQuery heritage), feature-rich | Heavy dependency chain, jQuery-era API design, larger bundle | Avoid - too heavy for campaign tool |
+react-image-crop + native Canvas was the original research recommendation for minimal bundle size. However, react-konva is the right choice here because:
 
-**Aspect Ratio Locking:**
-```typescript
-<ReactCrop 
-  crop={crop}
-  onChange={c => setCrop(c)}
-  aspect={1} // or calculate from initial image dimensions
-  locked={true} // prevents changing aspect ratio
->
-  <img src={userPhoto} />
-</ReactCrop>
-```
-
-**Confidence:** HIGH (GitHub verified react-image-crop, official docs verified features)
-
----
-
-### Image Compositing & Export
-
-| Technology | Version | Purpose | Why |
-|------------|---------|---------|-----|
-| **HTML5 Canvas API** | Native | Layer compositing, export | Zero dependencies, browser-native, simpler than frameworks for static overlay, direct pixel control |
-
-**Why Canvas API over alternatives:**
+1. **Drag/reposition built-in** — `draggable` prop on `<Image>` node, no manual mouse/touch event handling
+2. **Transforms built-in** — Scale, position, rotation via `<Transformer>` or direct prop updates
+3. **Retina handled automatically** — Konva's `<Stage>` scales for devicePixelRatio by default
+4. **Single surface for preview AND export** — `stage.toDataURL()` / `stage.toBlob()` exports the live stage, no separate offscreen canvas
+5. **React-native API** — Fully declarative, no useRef/useEffect juggling for interactions
+6. **react-image-crop no longer needed** — Konva replaces it entirely
 
 | Approach | Pros | Cons | Verdict |
 |----------|------|------|---------|
-| **Native Canvas API** ✅ | Zero dependencies, browser-native, direct control, simple for static overlays | Imperative (requires useRef/useEffect), manual image loading | **RECOMMENDED** - Simplest for this use case |
-| react-konva | Declarative React bindings for Konva, 6.3K stars, good for complex graphics | Adds 100KB+ to bundle, overkill for two-layer composite, introduces abstraction layer | Unnecessary complexity |
-| Fabric.js | Rich interactive canvas library, built-in transforms | Not React-native, imperative API, 200KB+ bundle, designed for editors not simple overlays | Too heavy, not React-first |
+| **react-konva** ✅ | Declarative, drag/zoom free, retina auto, export built-in, React-first | ~200KB bundle vs native canvas | **SELECTED by user** |
+| Native Canvas API | Zero dependencies, smallest bundle | Manual drag/touch events, manual retina scaling, separate preview vs export canvas | More manual work for same result |
+| Fabric.js | Rich editor features | Not React-native, imperative API | Avoid |
 
-**For this project:** Two static layers (user photo + PNG frame) with one-time export doesn't justify a canvas framework. Native Canvas API via useRef provides the simplest implementation.
-
-**Compositing Pattern:**
+**Usage Pattern:**
 ```typescript
-const canvasRef = useRef<HTMLCanvasElement>(null);
+import { Stage, Layer, Image as KonvaImage } from 'react-konva';
+import useImage from 'use-image'; // companion hook for loading images
 
-const composeImage = () => {
-  const canvas = canvasRef.current;
-  const ctx = canvas.getContext('2d');
-  
-  // Draw user photo layer (with crop/resize applied)
-  ctx.drawImage(userPhotoElement, x, y, width, height);
-  
-  // Draw frame overlay with transparency
-  ctx.drawImage(frameElement, 0, 0, canvas.width, canvas.height);
-};
+// Photo layer — draggable, scalable
+<Stage width={size} height={size} ref={stageRef}>
+  <Layer>
+    <KonvaImage image={userPhoto} x={x} y={y} scaleX={scale} scaleY={scale} draggable />
+    <KonvaImage image={frameImage} x={0} y={0} width={size} height={size} listening={false} />
+  </Layer>
+</Stage>
+
+// Export
+stageRef.current.toDataURL({ pixelRatio: window.devicePixelRatio });
 ```
 
-**Export Pattern:**
-```typescript
-const downloadComposite = () => {
-  const canvas = canvasRef.current;
-  
-  // Method 1: toDataURL (simple)
-  const dataURL = canvas.toDataURL('image/png');
-  const link = document.createElement('a');
-  link.download = 'profile-with-frame.png';
-  link.href = dataURL;
-  link.click();
-  
-  // Method 2: toBlob (better for large images)
-  canvas.toBlob((blob) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = 'profile-with-frame.png';
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url); // cleanup
-  }, 'image/png');
-};
-```
+**Companion library:** `use-image` (tiny hook to load images for Konva) — maintained by the Konva team.
 
-**Confidence:** HIGH (MDN Canvas API docs verified, React integration pattern verified)
+**Confidence:** HIGH (react-konva official docs, Konva.js docs verified)
 
 ---
 
@@ -199,14 +156,14 @@ type State = {
 npm create vite@latest profile-pic-frame -- --template react-ts
 cd profile-pic-frame
 
-# 2. Install image crop library
-npm install react-image-crop
+# 2. Install react-konva and companion hook
+npm install react-konva konva use-image
 
 # 3. Start dev server
 npm run dev
 ```
 
-**Total bundle size (estimated):** ~150KB gzipped (React 18 ~45KB + react-image-crop ~5KB + app code)
+**Total bundle size (estimated):** ~350KB gzipped (React 18 ~45KB + react-konva/konva ~200KB + use-image ~2KB + app code)
 
 ---
 
