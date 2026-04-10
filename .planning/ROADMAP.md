@@ -7,7 +7,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & UI Shell** - Single index.html with Konva stage, polished layout, and placeholder sections
+- [x] **Phase 1: Foundation & UI Shell** - Single index.html with Konva stage, polished layout, and placeholder sections ✓
 - [ ] **Phase 2: Upload & Frame Selection** - File upload with validation, frame picker, and basic layered preview on Konva stage
 - [ ] **Phase 3: Interactive Editing** - Per-layer scale sliders with centered aspect-ratio-locked images on Konva stage
 - [ ] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness
@@ -27,7 +27,7 @@
 **Plans**: 1 plan
 
 Plans:
-- [ ] 01-01-PLAN.md — Complete HTML/CSS/JS scaffold with Konva initialization (download konva.min.js + create polished index.html)
+- [x] 01-01-PLAN.md — Complete HTML/CSS/JS scaffold with Konva initialization (download konva.min.js + create polished index.html) ✓
 
 **UI hint**: yes
 
@@ -83,11 +83,11 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & UI Shell | 0/1 | Ready to execute | - |
+| 1. Foundation & UI Shell | 1/1 | ✓ Complete | 2026-04-10 |
 | 2. Upload & Frame Selection | 0/2 | Not started | - |
 | 3. Interactive Editing | 0/1 | Not started | - |
 | 4. Canvas Export | 0/1 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-10*
-*Last updated: 2026-04-10 — Phase 1 planning complete (1 plan created)*
+*Last updated: 2026-04-10 — Phase 1 execution complete (1/1 plans completed in 106 seconds)*
