@@ -273,6 +273,11 @@
     // Load frame PNG onto frameLayer (Phase 2)
     function loadFrame(frameId, src) {
       Konva.Image.fromURL(src, function(frameNode) {
+        if (!frameNode) {
+          console.error('Failed to load frame:', frameId);
+          return;
+        }
+
         // D-04: Remove old frame if exists
         if (state.frameImage) {
           state.frameImage.destroy();
@@ -365,6 +370,13 @@
         const dataURL = e.target.result;
 
         Konva.Image.fromURL(dataURL, function(imageNode) {
+          if (!imageNode) {
+            alert('Failed to load image. Please try another file.');
+            console.error('Image decode failed');
+            event.target.value = '';
+            return;
+          }
+
           // D-08: Remove old photo if exists (replacement behavior)
           if (state.photoImage) {
             state.photoImage.destroy();
