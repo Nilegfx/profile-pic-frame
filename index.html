@@ -399,6 +399,7 @@
       };
 
       reader.onerror = function(e) {
+        alert('Failed to load image. Please try another file.');
         console.error('FileReader error:', e);
         // Reset input even on error
         event.target.value = '';
