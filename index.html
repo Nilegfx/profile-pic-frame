@@ -364,7 +364,7 @@
         Konva.Image.fromURL(dataURL, function(imageNode) {
           // D-08: Remove old photo if exists (replacement behavior)
           if (state.photoImage) {
-            state.photoImage.remove();
+            state.photoImage.destroy();
           }
 
           // D-01: Center at natural pixel size on 500×500 stage
