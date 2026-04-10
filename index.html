@@ -386,11 +386,16 @@
           state.photoImage = imageNode;
 
           photoLayer.draw();
+
+          // Reset input to allow re-uploading same file
+          event.target.value = '';
         });
       };
 
       reader.onerror = function(e) {
         console.error('FileReader error:', e);
+        // Reset input even on error
+        event.target.value = '';
       };
 
       reader.readAsDataURL(file);
