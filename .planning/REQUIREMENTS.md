@@ -68,26 +68,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UPL-01 | TBD | Pending |
-| UPL-02 | TBD | Pending |
-| UPL-03 | TBD | Pending |
-| FRM-01 | TBD | Pending |
-| FRM-02 | TBD | Pending |
-| FRM-03 | TBD | Pending |
-| EDT-01 | TBD | Pending |
-| EDT-02 | TBD | Pending |
-| EDT-03 | TBD | Pending |
-| EDT-04 | TBD | Pending |
-| PRV-01 | TBD | Pending |
-| DWN-01 | TBD | Pending |
-| DWN-02 | TBD | Pending |
-| DWN-03 | TBD | Pending |
+| UPL-01 | Phase 2 | Pending |
+| UPL-02 | Phase 2 | Pending |
+| UPL-03 | Phase 2 | Pending |
+| FRM-01 | Phase 2 | Pending |
+| FRM-02 | Phase 2 | Pending |
+| FRM-03 | Phase 2 | Pending |
+| EDT-01 | Phase 3 | Pending |
+| EDT-02 | Phase 3 | Pending |
+| EDT-03 | Phase 3 | Pending |
+| EDT-04 | Phase 3 | Pending |
+| PRV-01 | Phase 3 | Pending |
+| DWN-01 | Phase 4 | Pending |
+| DWN-02 | Phase 4 | Pending |
+| DWN-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 14 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 14 ⚠️
+- Mapped to phases: 14 (100%)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-10*
-*Last updated: 2026-04-10 after initial definition*
+*Last updated: 2026-04-10 after roadmap creation*
