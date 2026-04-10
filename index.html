@@ -385,6 +385,12 @@
           photoLayer.add(imageNode);
           state.photoImage = imageNode;
 
+          // Reset slider to default scale (per D-08)
+          document.getElementById('photo-scale').value = 1;
+          state.photoScale = 1;
+          imageNode.scaleX(1);
+          imageNode.scaleY(1);
+
           photoLayer.draw();
 
           // Reset input to allow re-uploading same file
