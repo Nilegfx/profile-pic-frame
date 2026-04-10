@@ -297,8 +297,11 @@
     function discoverFrames() {
       const picker = document.getElementById('frame-picker');
       let index = 1;
+      const maxFrames = 9; // Stop at 9 to prevent infinite probing
 
       function probeNext() {
+        if (index > maxFrames) return; // Guard against infinite loop
+
         const frameId = 'frame-' + index;
         const src = frameId + '.png';
         const img = new Image();
