@@ -322,6 +322,53 @@
       document.getElementById('photo-upload').click();
     });
 
+    // Photo upload handler (Phase 2)
+    document.getElementById('photo-upload').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return; // User cancelled picker
+
+      // D-07: Silent MIME validation (ignore non-JPEG/PNG files)
+      if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+        return; // Silent ignore per D-07
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const dataURL = e.target.result;
+
+        Konva.Image.fromURL(dataURL, function(imageNode) {
+          // D-08: Remove old photo if exists (replacement behavior)
+          if (state.photoImage) {
+            state.photoImage.remove();
+          }
+
+          // D-01: Center at natural pixel size on 500×500 stage
+          imageNode.position({ x: 250, y: 250 });
+          imageNode.offset({
+            x: imageNode.width() / 2,
+            y: imageNode.height() / 2
+          });
+
+          // D-10: Hide empty state
+          background.visible(false);
+          placeholderText.visible(false);
+
+          // Add to layer and update state
+          photoLayer.add(imageNode);
+          state.photoImage = imageNode;
+
+          photoLayer.draw();
+        });
+      };
+
+      reader.onerror = function(e) {
+        console.error('FileReader error:', e);
+      };
+
+      reader.readAsDataURL(file);
+    });
+
     // Log initialization success
     console.log('Konva Stage initialized:', {
       width: stage.width(),
