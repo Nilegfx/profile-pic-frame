@@ -1,7 +1,7 @@
 # Roadmap: Profile Pic Frame
 
 **Created:** 2026-04-10
-**Updated:** 2026-04-10 — Phase 1 planning complete
+**Updated:** 2026-04-10 — Phase 2 planning complete
 **Granularity:** Coarse (3-5 phases, 1-3 plans each)
 **Mode:** YOLO
 
@@ -32,21 +32,22 @@ Plans:
 **UI hint**: yes
 
 ### Phase 2: Upload & Frame Selection
-**Goal**: Users can upload their photo and select between two campaign frames, seeing both composited on the Konva stage
+**Goal**: Users can upload their photo and select between campaign frames, seeing both composited on the Konva stage
 **Depends on**: Phase 1
 **Requirements**: UPL-01, UPL-02, UPL-03, FRM-01, FRM-02, FRM-03
 **Success Criteria** (what must be TRUE):
   1. Clicking the upload area opens a file picker; selecting a JPEG or PNG displays the photo on the Konva stage
-  2. Non-JPEG/PNG files are rejected with a visible error message
-  3. Two frame thumbnails are shown; clicking one highlights it and loads the frame PNG onto the stage
+  2. Non-JPEG/PNG files are silently ignored (no error message per user decision D-07)
+  3. Frame thumbnails are dynamically discovered; clicking one highlights it and loads the frame PNG onto the stage
   4. Frame PNG is rendered as a `Konva.Image` node on top of the photo node
   5. All image loading uses `FileReader` + `Konva.Image.fromURL` — no server requests
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 2 plans
 
-**Suggested plan breakdown (1-3 plans for coarse):**
-  - Plan 2.1: File input wired to FileReader with JPEG/PNG validation; photo loaded as `Konva.Image` on stage
-  - Plan 2.2: Two frame PNGs bundled as base64 data URIs or local file references; frame picker UI with active state; frame loaded as `Konva.Image` above photo
+Plans:
+- [ ] 02-01-PLAN.md — Wire photo upload: file input → FileReader → Konva.Image → photoLayer (UPL-01, UPL-02, UPL-03)
+- [ ] 02-02-PLAN.md — Wire frame selection: extend discoverFrames() → load frame PNG → frameLayer (FRM-01, FRM-02, FRM-03)
+
+**UI hint**: yes
 
 ### Phase 3: Interactive Editing
 **Goal**: Users can independently scale the photo and frame using sliders; both stay centered and aspect-ratio locked
@@ -84,10 +85,10 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & UI Shell | 1/1 | ✓ Complete | 2026-04-10 |
-| 2. Upload & Frame Selection | 0/2 | Not started | - |
+| 2. Upload & Frame Selection | 0/2 | Planned | - |
 | 3. Interactive Editing | 0/1 | Not started | - |
 | 4. Canvas Export | 0/1 | Not started | - |
 
 ---
 *Roadmap created: 2026-04-10*
-*Last updated: 2026-04-10 — Phase 1 execution complete (1/1 plans completed in 106 seconds)*
+*Last updated: 2026-04-10 — Phase 2 planning complete (2 plans created)*
