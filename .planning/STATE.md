@@ -1,7 +1,21 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+last_updated: "2026-04-10T17:42:54.621Z"
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 1
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State: Profile Pic Frame
 
 **Last updated:** 2026-04-10 at initialization
-**Status:** Active | Phase 1 pending
+**Status:** Ready to execute
 
 ---
 
@@ -11,7 +25,7 @@
 User uploads photo, picks frame, adjusts fit, downloads result — in under a minute, entirely in the browser.
 
 **Current focus:**
-Setting up project foundation and component structure for 2-3 day campaign tool.
+Setting up single `index.html` with native Konva.js — no React, no build step.
 
 ---
 
@@ -30,17 +44,20 @@ Awaiting `/gsd-plan-phase 1` to create executable plans for foundation setup.
 ## Performance Metrics
 
 **Velocity:**
+
 - Phases completed: 0
 - Plans completed: 0
 - Average time per phase: N/A
 - Average time per plan: N/A
 
 **Quality:**
+
 - Verifier failures: 0
 - Plan revisions: 0
 - Node repairs: 0/2 budget remaining
 
 **Coverage:**
+
 - v1 requirements: 14 total
 - Requirements mapped: 14 (100%)
 - Requirements completed: 0 (0%)
@@ -53,21 +70,26 @@ Awaiting `/gsd-plan-phase 1` to create executable plans for foundation setup.
 
 | Date | Decision | Rationale | Impact |
 |------|----------|-----------|--------|
-| 2026-04-10 | 4-phase coarse roadmap following research recommendations | Matches tech stack dependencies: UI shell → upload/selection → editing → canvas export | Clear build order, each phase testable independently |
-| 2026-04-10 | Use react-image-crop (not react-easy-crop) for editing | Lighter (5KB vs 100KB+), sufficient features for 2-frame campaign | Faster bundle, simpler integration |
-| 2026-04-10 | Lazy canvas compositing pattern (only on download) | react-image-crop provides visual preview without canvas overhead | Better performance, isolates canvas pitfalls to Phase 4 |
+| 2026-04-10 | 4-phase coarse roadmap | Matches dependencies: UI shell → upload/selection → editing → canvas export | Clear build order, each phase testable independently |
+| 2026-04-10 | **Pivot: native Konva.js + single `index.html`** (no React, no Vite) | React/Vite overkill for a single-view campaign tool; no build step = faster iteration and trivial deployment | All phases rewritten; stack is now Konva.min.js (local) + vanilla JS + inline CSS |
+| 2026-04-10 | `konva.min.js` downloaded locally (no CDN) | Eliminates runtime CDN dependency; works offline and on any static host | Must download konva.min.js as first step of Phase 1 |
+| 2026-04-10 | Polished campaign-quality UI | User preference — styled to look like a real product | Phase 1 must deliver a complete CSS layout, not just a functional stub |
 
 ### Technical Debt
+
 (None yet)
 
 ### Blockers
+
 (None currently)
 
 ### Open Questions
+
 1. **Frame asset specifications:** Need actual frame PNGs before Phase 2. Recommended specs: PNG with alpha channel, square aspect ratio, minimum 1000x1000 (prefer 2000x2000 for retina).
 2. **Output dimensions:** PROJECT.md states dynamic sizing but profile frame tools typically export at fixed sizes (400x400, 800x800, 1200x1200). Validate with user during Phase 4 planning.
 
 ### TODOs
+
 - [ ] Obtain two campaign frame PNG assets (before Phase 2)
 - [ ] Validate output dimension requirements (fixed vs dynamic sizing)
 - [ ] Plan mobile device testing strategy for Phase 4 (iOS Safari, Chrome Android)
@@ -77,18 +99,20 @@ Awaiting `/gsd-plan-phase 1` to create executable plans for foundation setup.
 ## Session Continuity
 
 **Where we left off:**
-Roadmap created with 4 phases. All 14 v1 requirements mapped. Ready to begin Phase 1 planning.
+Architecture pivoted from React+Vite to native Konva.js + single `index.html`. ROADMAP.md and CLAUDE.md updated. All 4 phases rewritten for new stack. Ready to plan Phase 1.
 
 **Next steps:**
-1. Run `/gsd-plan-phase 1` to decompose Foundation & UI Shell into executable plans
+
+1. Run `/gsd-plan-phase 1` to create executable plans for the HTML/Konva foundation
 2. Review plans and approve or provide feedback
-3. Execute Phase 1 plans to establish project scaffold
+3. Execute Phase 1 to produce `index.html` + `konva.min.js`
 
 **Context for next session:**
-- This is a 2-3 day campaign tool (speed over polish)
+
+- Stack: native Konva.js (local konva.min.js) + vanilla JS + single index.html — no React, no build step
+- Polished campaign-quality UI (not minimal)
 - YOLO mode (fast iteration, assume success)
 - Coarse granularity (1-3 plans per phase)
-- Canvas API work concentrated in Phase 4 (needs research-phase before planning per SUMMARY.md)
 
 ---
 
