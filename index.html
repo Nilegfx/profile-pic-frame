@@ -270,6 +270,28 @@
     photoLayer.draw();
     frameLayer.draw();
 
+    // Load frame PNG onto frameLayer (Phase 2)
+    function loadFrame(frameId, src) {
+      Konva.Image.fromURL(src, function(frameNode) {
+        // D-04: Remove old frame if exists
+        if (state.frameImage) {
+          state.frameImage.remove();
+        }
+
+        // D-05: Frame fills 500×500 stage at top-left
+        frameNode.position({ x: 0, y: 0 });
+        frameNode.width(500);
+        frameNode.height(500);
+
+        // D-11: Update state
+        frameLayer.add(frameNode);
+        state.frameImage = frameNode;
+        state.selectedFrame = frameId;
+
+        frameLayer.draw();
+      });
+    }
+
     // Dynamically discover frame-N.png files and build thumbnails
     // Probes frame-1 through frame-9; stops at first missing file
     function discoverFrames() {
@@ -297,7 +319,9 @@
               t.classList.remove('active');
             });
             thumb.classList.add('active');
-            state.selectedFrame = frameId;
+
+            // Phase 2: Load frame onto canvas
+            loadFrame(frameId, src);
           });
 
           picker.appendChild(thumb);
