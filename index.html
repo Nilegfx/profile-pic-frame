@@ -226,7 +226,8 @@
       frameImage: null,      // Konva.Image node for selected frame
       photoScale: 1,         // Scale factor for photo (0.5 to 2.0)
       frameScale: 1,         // Scale factor for frame (0.5 to 2.0)
-      selectedFrame: null    // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
+      selectedFrame: null,   // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
+      isLoadingPhoto: false  // Prevent concurrent photo uploads
     };
 
     // Initialize Konva Stage
@@ -359,17 +360,27 @@
       const file = event.target.files[0];
       if (!file) return; // User cancelled picker
 
+      // Prevent concurrent uploads
+      if (state.isLoadingPhoto) {
+        console.warn('Photo upload already in progress');
+        event.target.value = '';
+        return;
+      }
+
       // D-07: Silent MIME validation (ignore non-JPEG/PNG files)
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
         return; // Silent ignore per D-07
       }
 
       const reader = new FileReader();
+      state.isLoadingPhoto = true;  // Set flag
 
       reader.onload = function(e) {
         const dataURL = e.target.result;
 
         Konva.Image.fromURL(dataURL, function(imageNode) {
+          state.isLoadingPhoto = false;  // Clear flag
+
           if (!imageNode) {
             alert('Failed to load image. Please try another file.');
             console.error('Image decode failed');
@@ -411,6 +422,7 @@
       };
 
       reader.onerror = function(e) {
+        state.isLoadingPhoto = false;  // Clear flag on error too
         alert('Failed to load image. Please try another file.');
         console.error('FileReader error:', e);
         // Reset input even on error
