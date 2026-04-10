@@ -25,23 +25,38 @@
       margin: 0 auto;
     }
 
-    /* Controls bar */
-    .controls-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 16px;
+    /* Controls panel — two rows */
+    .controls-panel {
       background: #FFFFFF;
       border: 1px solid #E5E7EB;
       border-radius: 8px;
       margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    /* Row shared styles */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+    }
+
+    .controls-row + .controls-row {
+      border-top: 1px solid #E5E7EB;
+    }
+
+    /* Frame row — allow wrapping if many frames */
+    .frames-row {
+      flex-wrap: wrap;
+      gap: 8px 12px;
     }
 
     /* Control groups */
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .control-group label {
@@ -80,8 +95,17 @@
     }
 
     /* Frame picker */
+    .frames-row-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #1F2937;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
     .frame-picker {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
@@ -99,7 +123,16 @@
       font-size: 12px;
       color: #9CA3AF;
       text-align: center;
-      padding: 8px;
+      padding: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .frame-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
     }
 
     .frame-thumbnail:hover {
@@ -136,42 +169,46 @@
 </head>
 <body>
   <div class="app-container">
-    <!-- Controls Bar -->
-    <div class="controls-bar">
-      <!-- Upload Button -->
-      <div class="control-group">
-        <button id="upload-btn">Upload Photo</button>
-        <input type="file" id="photo-upload" accept="image/png, image/jpeg">
-      </div>
+    <!-- Controls Panel (two rows) -->
+    <div class="controls-panel">
 
-      <!-- Frame Picker -->
-      <div class="control-group">
-        <label>Choose Frame</label>
-        <div class="frame-picker">
-          <div id="frame-1-thumb" class="frame-thumbnail">Frame 1</div>
-          <div id="frame-2-thumb" class="frame-thumbnail">Frame 2</div>
+      <!-- Row 1: Frame Picker (populated dynamically by JS) -->
+      <div class="controls-row frames-row">
+        <span class="frames-row-label">Choose Frame</span>
+        <div id="frame-picker" class="frame-picker">
+          <!-- Thumbnails injected here by discoverFrames() -->
         </div>
       </div>
 
-      <!-- Photo Size Slider -->
-      <div class="control-group">
-        <label for="photo-scale">Photo Size</label>
-        <input type="range" id="photo-scale" min="0.5" max="2" step="0.1" value="1">
+      <!-- Row 2: Upload, Sliders, Download -->
+      <div class="controls-row">
+        <!-- Upload Button -->
+        <div class="control-group">
+          <button id="upload-btn">Upload Photo</button>
+          <input type="file" id="photo-upload" accept="image/png, image/jpeg">
+        </div>
+
+        <!-- Photo Size Slider -->
+        <div class="control-group">
+          <label for="photo-scale">Photo Size</label>
+          <input type="range" id="photo-scale" min="0.5" max="2" step="0.1" value="1">
+        </div>
+
+        <!-- Frame Size Slider -->
+        <div class="control-group">
+          <label for="frame-scale">Frame Size</label>
+          <input type="range" id="frame-scale" min="0.5" max="2" step="0.1" value="1">
+        </div>
+
+        <!-- Spacer -->
+        <div class="spacer"></div>
+
+        <!-- Download Button -->
+        <div class="control-group">
+          <button id="download-btn">Download</button>
+        </div>
       </div>
 
-      <!-- Frame Size Slider -->
-      <div class="control-group">
-        <label for="frame-scale">Frame Size</label>
-        <input type="range" id="frame-scale" min="0.5" max="2" step="0.1" value="1">
-      </div>
-
-      <!-- Spacer -->
-      <div class="spacer"></div>
-
-      <!-- Download Button -->
-      <div class="control-group">
-        <button id="download-btn">Download</button>
-      </div>
     </div>
 
     <!-- Canvas -->
@@ -189,7 +226,7 @@
       frameImage: null,      // Konva.Image node for selected frame
       photoScale: 1,         // Scale factor for photo (0.5 to 2.0)
       frameScale: 1,         // Scale factor for frame (0.5 to 2.0)
-      selectedFrame: null    // Which frame is active (null, 'frame-1', 'frame-2')
+      selectedFrame: null    // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
     };
 
     // Initialize Konva Stage
@@ -232,6 +269,53 @@
     // Initial render
     photoLayer.draw();
     frameLayer.draw();
+
+    // Dynamically discover frame-N.png files and build thumbnails
+    // Probes frame-1 through frame-9; stops at first missing file
+    function discoverFrames() {
+      const picker = document.getElementById('frame-picker');
+      let index = 1;
+
+      function probeNext() {
+        const frameId = 'frame-' + index;
+        const src = frameId + '.png';
+        const img = new Image();
+
+        img.onload = function() {
+          const thumb = document.createElement('div');
+          thumb.id = frameId + '-thumb';
+          thumb.className = 'frame-thumbnail';
+          thumb.dataset.frame = frameId;
+
+          const imgEl = document.createElement('img');
+          imgEl.src = src;
+          imgEl.alt = 'Frame ' + index;
+          thumb.appendChild(imgEl);
+
+          thumb.addEventListener('click', function() {
+            document.querySelectorAll('.frame-thumbnail').forEach(function(t) {
+              t.classList.remove('active');
+            });
+            thumb.classList.add('active');
+            state.selectedFrame = frameId;
+          });
+
+          picker.appendChild(thumb);
+          index++;
+          probeNext();
+        };
+
+        img.onerror = function() {
+          // No more frames at this index — stop probing
+        };
+
+        img.src = src;
+      }
+
+      probeNext();
+    }
+
+    discoverFrames();
 
     // Wire upload button to trigger file input (Phase 2 will implement the actual handler)
     document.getElementById('upload-btn').addEventListener('click', function() {
