@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(gsd-new-project)",
+      "WebSearch",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:vitejs.dev)",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:github.com)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
