@@ -165,6 +165,131 @@
     .spacer {
       flex-grow: 1;
     }
+
+    /* Split button container */
+    .split-button-container {
+      position: relative;
+      display: inline-flex;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Main download button */
+    .split-button-main {
+      flex-grow: 1;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #FFFFFF;
+      background: #FF6B35;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.15s ease-in-out;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .split-button-main:disabled {
+      background: #9CA3AF;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .split-button-main:not(:disabled):hover {
+      background: #E55A28;
+    }
+
+    .split-button-main:not(:disabled):active {
+      background: #D14B1F;
+    }
+
+    /* Divider between main and arrow */
+    .split-button-divider {
+      width: 1px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .split-button-main:disabled + .split-button-divider {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Arrow button */
+    .split-button-arrow {
+      width: 32px;
+      padding: 12px 0;
+      font-size: 16px;
+      color: #FFFFFF;
+      background: #FF6B35;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.15s ease-in-out;
+      text-align: center;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .split-button-arrow:disabled {
+      background: #9CA3AF;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .split-button-arrow:not(:disabled):hover {
+      background: #E55A28;
+    }
+
+    .split-button-arrow:not(:disabled):active {
+      background: #D14B1F;
+    }
+
+    /* Dropdown menu */
+    .resolution-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      min-width: 160px;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+    }
+
+    .resolution-dropdown[style*="display: block"] {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Dropdown item */
+    .dropdown-item {
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #1F2937;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.1s ease-in-out;
+    }
+
+    .dropdown-item:hover {
+      background: #F3F4F6;
+    }
+
+    .dropdown-item .checkmark {
+      color: #FF6B35;
+      font-size: 14px;
+      width: 14px;
+    }
   </style>
 </head>
 <body>
@@ -203,9 +328,46 @@
         <!-- Spacer -->
         <div class="spacer"></div>
 
-        <!-- Download Button -->
+        <!-- Download Button (Split-button) -->
         <div class="control-group">
-          <button id="download-btn">Download</button>
+          <div class="split-button-container" role="group" aria-label="Download with resolution options">
+            <!-- Main download button -->
+            <button
+              type="button"
+              id="download-btn"
+              class="split-button-main"
+              aria-label="Download profile picture at selected resolution"
+              disabled
+            >
+              Download (1×)
+            </button>
+
+            <!-- Divider -->
+            <div class="split-button-divider"></div>
+
+            <!-- Arrow button (opens dropdown) -->
+            <button
+              type="button"
+              id="download-arrow-btn"
+              class="split-button-arrow"
+              aria-label="Select resolution"
+              aria-expanded="false"
+              aria-haspopup="menu"
+              disabled
+            >
+              ▾
+            </button>
+
+            <!-- Dropdown menu (hidden by default) -->
+            <ul id="resolution-dropdown" class="resolution-dropdown" role="menu" aria-label="Resolution options" style="display: none;">
+              <li role="menuitem" data-resolution="1" aria-checked="true" class="dropdown-item selected">
+                <span class="checkmark">✓</span> 1× (500px)
+              </li>
+              <li role="menuitem" data-resolution="2" aria-checked="false" class="dropdown-item">
+                <span class="checkmark" style="visibility: hidden;">✓</span> 2× (1000px)
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
