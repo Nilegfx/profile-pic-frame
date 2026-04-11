@@ -31,7 +31,6 @@
       border: 1px solid #E5E7EB;
       border-radius: 8px;
       margin-bottom: 24px;
-      overflow: hidden;
     }
 
     /* Row shared styles */
@@ -171,7 +170,6 @@
       position: relative;
       display: inline-flex;
       border-radius: 8px;
-      overflow: hidden;
     }
 
     /* Main download button */
@@ -659,23 +657,42 @@
 
     // === DOWNLOAD: Resolution picker and dropdown logic ===
 
-    // Toggle dropdown visibility when arrow button clicked
+    // Query buttons once at module scope (shared across all handlers)
+    const downloadBtn = document.getElementById('download-btn');
     const arrowBtn = document.getElementById('download-arrow-btn');
     const dropdown = document.getElementById('resolution-dropdown');
 
+    // DEBUG: Log what we found
+    console.log('[DEBUG] Button queries:', {
+      downloadBtn: downloadBtn,
+      arrowBtn: arrowBtn,
+      dropdown: dropdown,
+      arrowBtnDisabled: arrowBtn ? arrowBtn.disabled : 'N/A'
+    });
+
+    // Toggle dropdown visibility when arrow button clicked
     arrowBtn.addEventListener('click', function(event) {
+      console.log('[DEBUG] Arrow button clicked!', {
+        disabled: arrowBtn.disabled,
+        dropdownDisplay: dropdown.style.display,
+        event: event
+      });
+
       event.stopPropagation(); // Prevent outside click handler from immediately closing
 
       const isOpen = dropdown.style.display === 'block';
+      console.log('[DEBUG] isOpen:', isOpen);
 
       if (isOpen) {
         // Close dropdown
         dropdown.style.display = 'none';
         arrowBtn.setAttribute('aria-expanded', 'false');
+        console.log('[DEBUG] Closed dropdown');
       } else {
         // Open dropdown
         dropdown.style.display = 'block';
         arrowBtn.setAttribute('aria-expanded', 'true');
+        console.log('[DEBUG] Opened dropdown');
       }
     });
 
@@ -709,7 +726,6 @@
         state.selectedResolution = resolution;
 
         // Update main button label
-        const downloadBtn = document.getElementById('download-btn');
         downloadBtn.textContent = 'Download (' + resolution + '×)';
 
         // Update checkmark visibility (show on selected, hide on others)
@@ -739,21 +755,28 @@
 
     // Enable/disable download button based on whether photo is uploaded
     function updateDownloadState() {
-      const downloadBtn = document.getElementById('download-btn');
-      const arrowBtn = document.getElementById('download-arrow-btn');
       const hasPhoto = state.photoImage !== null;
+
+      console.log('[DEBUG] updateDownloadState called:', {
+        hasPhoto: hasPhoto,
+        beforeDownloadBtnDisabled: downloadBtn.disabled,
+        beforeArrowBtnDisabled: arrowBtn.disabled
+      });
 
       // Enable both buttons if photo exists, disable if no photo
       downloadBtn.disabled = !hasPhoto;
       arrowBtn.disabled = !hasPhoto;
+
+      console.log('[DEBUG] After update:', {
+        downloadBtnDisabled: downloadBtn.disabled,
+        arrowBtnDisabled: arrowBtn.disabled
+      });
     }
 
     // Initialize disabled state (no photo at startup)
     updateDownloadState();
 
     // === DOWNLOAD: Export handler ===
-
-    const downloadBtn = document.getElementById('download-btn');
 
     downloadBtn.addEventListener('click', function() {
       // Guard: should never fire when disabled, but double-check
