@@ -607,6 +607,26 @@
             y: imageNode.height() / 2
           });
 
+          // D-06: Make photo draggable
+          imageNode.draggable(true);
+
+          // D-07: Constrain drag so at least 50px of image remains visible
+          imageNode.dragBoundFunc(function(pos) {
+            const scaledWidth = this.width() * this.scaleX();
+            const scaledHeight = this.height() * this.scaleY();
+            const minVisible = 50; // At least 50px must remain visible
+
+            const maxX = stage.width() - minVisible;
+            const minX = minVisible - scaledWidth;
+            const maxY = stage.height() - minVisible;
+            const minY = minVisible - scaledHeight;
+
+            return {
+              x: Math.max(minX, Math.min(pos.x, maxX)),
+              y: Math.max(minY, Math.min(pos.y, maxY))
+            };
+          });
+
           // D-10: Hide empty state
           background.visible(false);
           placeholderText.visible(false);
