@@ -101,7 +101,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 05-01-PLAN.md — Create transformerLayer, Transformer with orange styling, draggable photo with boundary constraints, attach on upload, hide/show on export, remove slider UI/JS
+- [x] 05-01-PLAN.md — Create transformerLayer, Transformer with orange styling, draggable photo with boundary constraints, attach on upload, hide/show on export, remove slider UI/JS
 
 **UI hint**: yes
 

@@ -19,9 +19,9 @@
 
 ### Editing
 
-- [ ] **EDT-01**: User can scale the profile photo using a slider, aspect ratio locked
-- [ ] **EDT-02**: User can scale the frame using a slider, aspect ratio locked
-- [ ] **EDT-03**: Both images are centered by default when loaded
+- [x] **EDT-01**: User can scale the profile photo using a slider, aspect ratio locked
+- [x] **EDT-02**: User can scale the frame using a slider, aspect ratio locked
+- [x] **EDT-03**: Both images are centered by default when loaded
 
 ### Preview
 
@@ -73,9 +73,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FRM-01 | Phase 2 | Pending |
 | FRM-02 | Phase 2 | Pending |
 | FRM-03 | Phase 2 | Pending |
-| EDT-01 | Phase 3 | Pending |
-| EDT-02 | Phase 3 | Pending |
-| EDT-03 | Phase 3 | Pending |
+| EDT-01 | Phase 3 | Complete |
+| EDT-02 | Phase 3 | Complete |
+| EDT-03 | Phase 3 | Complete |
 | PRV-01 | Phase 3 | Pending |
 | DWN-01 | Phase 4 | Complete |
 | DWN-02 | Phase 4 | Complete |
