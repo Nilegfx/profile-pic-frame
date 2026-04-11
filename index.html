@@ -389,7 +389,8 @@
       photoScale: 1,         // Scale factor for photo (0.5 to 2.0)
       frameScale: 1,         // Scale factor for frame (0.5 to 2.0)
       selectedFrame: null,   // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
-      isLoadingPhoto: false  // Prevent concurrent photo uploads
+      isLoadingPhoto: false, // Prevent concurrent photo uploads
+      selectedResolution: 1  // Export resolution: 1 (500px) or 2 (1000px)
     };
 
     // Initialize Konva Stage
@@ -622,6 +623,84 @@
 
       // Redraw with frame-rate throttling (per D-10)
       photoLayer.batchDraw();
+    });
+
+    // === DOWNLOAD: Resolution picker and dropdown logic ===
+
+    // Toggle dropdown visibility when arrow button clicked
+    const arrowBtn = document.getElementById('download-arrow-btn');
+    const dropdown = document.getElementById('resolution-dropdown');
+
+    arrowBtn.addEventListener('click', function(event) {
+      event.stopPropagation(); // Prevent outside click handler from immediately closing
+
+      const isOpen = dropdown.style.display === 'block';
+
+      if (isOpen) {
+        // Close dropdown
+        dropdown.style.display = 'none';
+        arrowBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        // Open dropdown
+        dropdown.style.display = 'block';
+        arrowBtn.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const container = document.querySelector('.split-button-container');
+
+      // If click is outside split-button container and dropdown is open, close it
+      if (!container.contains(event.target) && dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        arrowBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close dropdown on Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        arrowBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Handle resolution selection
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    dropdownItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        const resolution = parseInt(item.getAttribute('data-resolution'), 10); // 1 or 2
+
+        // Update state
+        state.selectedResolution = resolution;
+
+        // Update main button label
+        const downloadBtn = document.getElementById('download-btn');
+        downloadBtn.textContent = 'Download (' + resolution + '×)';
+
+        // Update checkmark visibility (show on selected, hide on others)
+        dropdownItems.forEach(function(otherItem) {
+          const isSelected = otherItem === item;
+          otherItem.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+
+          // Toggle checkmark visibility
+          const checkmark = otherItem.querySelector('.checkmark');
+          checkmark.style.visibility = isSelected ? 'visible' : 'hidden';
+
+          // Toggle selected class for styling (if needed)
+          if (isSelected) {
+            otherItem.classList.add('selected');
+          } else {
+            otherItem.classList.remove('selected');
+          }
+        });
+
+        // Close dropdown after selection
+        dropdown.style.display = 'none';
+        arrowBtn.setAttribute('aria-expanded', 'false');
+      });
     });
 
     // Log initialization success
