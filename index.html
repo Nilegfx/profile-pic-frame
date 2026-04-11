@@ -467,6 +467,7 @@
       const picker = document.getElementById('frame-picker');
       let index = 1;
       const maxFrames = 9; // Stop at 9 to prevent infinite probing
+      const timeoutMs = 3000; // 3 second timeout per probe
 
       function probeNext() {
         if (index > maxFrames) return; // Guard against infinite loop
@@ -475,7 +476,20 @@
         const src = frameId + '.png';
         const img = new Image();
 
+        let timedOut = false;
+        const timeoutId = setTimeout(function() {
+          timedOut = true;
+          console.warn('Frame probe timeout:', frameId);
+          // Stop probing on timeout
+        }, timeoutMs);
+
         img.onload = function() {
+          if (timedOut) return; // Don't process if timed out
+          clearTimeout(timeoutId);
+
+          // Guard: check again in case multiple loads race
+          if (index > maxFrames) return;
+
           const thumb = document.createElement('div');
           thumb.id = frameId + '-thumb';
           thumb.className = 'frame-thumbnail';
@@ -502,6 +516,8 @@
         };
 
         img.onerror = function() {
+          if (timedOut) return; // Already handled
+          clearTimeout(timeoutId);
           // No more frames at this index — stop probing
         };
 
