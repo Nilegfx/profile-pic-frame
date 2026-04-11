@@ -1,7 +1,7 @@
 # Roadmap: Profile Pic Frame
 
 **Created:** 2026-04-10
-**Updated:** 2026-04-10 — Phase 3 planning complete
+**Updated:** 2026-04-11 — Phase 5 planning complete
 **Granularity:** Coarse (3-5 phases, 1-3 plans each)
 **Mode:** YOLO
 
@@ -9,8 +9,8 @@
 
 - [x] **Phase 1: Foundation & UI Shell** - Single index.html with Konva stage, polished layout, and placeholder sections ✓
 - [x] **Phase 2: Upload & Frame Selection** - File upload with validation, frame picker, and basic layered preview on Konva stage ✓
-- [ ] **Phase 3: Interactive Editing** - Photo scale slider with centered aspect-ratio-locked image on Konva stage (frame fixed at 500×500)
-- [x] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness (completed 2026-04-11)
+- [x] **Phase 3: Interactive Editing** - Photo scale slider with centered aspect-ratio-locked image on Konva stage (frame fixed at 500×500) ✓
+- [x] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness (completed 2026-04-11) ✓
 - [ ] **Phase 5: Konva Drag & Transform Editing** - Replace photo scale slider with native Konva drag-to-position and transform handles for resize; handles hidden on export
 
 ## Phase Details
@@ -87,6 +87,7 @@ Plans:
 - [x] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard
 
 **UI hint**: yes
+
 ### Phase 5: Konva Drag & Transform Editing
 **Goal**: Replace the photo scale slider with native Konva drag-to-position and transform handles for resize. Handles must be aspect-ratio locked and invisible in the downloaded PNG.
 **Depends on**: Phase 4
@@ -97,7 +98,10 @@ Plans:
   3. Resize is aspect-ratio locked (uniform scale only)
   4. Transform handles are NOT visible in the downloaded PNG (hidden before export, restored after)
   5. Photo slider is removed from the UI
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 05-01-PLAN.md — Create transformerLayer, Transformer with orange styling, draggable photo with boundary constraints, attach on upload, hide/show on export, remove slider UI/JS
 
 **UI hint**: yes
 
@@ -107,10 +111,10 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & UI Shell | 1/1 | ✓ Complete | 2026-04-10 |
 | 2. Upload & Frame Selection | 2/2 | ✓ Complete | 2026-04-10 |
-| 3. Interactive Editing | 0/1 | Planned | - |
-| 4. Canvas Export | 1/1 | Complete   | 2026-04-11 |
-| 5. Konva Drag & Transform Editing | 0/? | Planning | - |
+| 3. Interactive Editing | 1/1 | ✓ Complete | 2026-04-10 |
+| 4. Canvas Export | 1/1 | ✓ Complete | 2026-04-11 |
+| 5. Konva Drag & Transform Editing | 0/1 | Planned | - |
 
 ---
 *Roadmap created: 2026-04-10*
-*Last updated: 2026-04-10 — Phase 3 planning complete (1 plan created)*
+*Last updated: 2026-04-11 — Phase 5 planning complete (1 plan created)*
