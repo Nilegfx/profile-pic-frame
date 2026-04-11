@@ -11,6 +11,7 @@
 - [x] **Phase 2: Upload & Frame Selection** - File upload with validation, frame picker, and basic layered preview on Konva stage ✓
 - [ ] **Phase 3: Interactive Editing** - Photo scale slider with centered aspect-ratio-locked image on Konva stage (frame fixed at 500×500)
 - [x] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness (completed 2026-04-11)
+- [ ] **Phase 5: Konva Drag & Transform Editing** - Replace photo scale slider with native Konva drag-to-position and transform handles for resize; handles hidden on export
 
 ## Phase Details
 
@@ -86,6 +87,20 @@ Plans:
 - [x] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard
 
 **UI hint**: yes
+### Phase 5: Konva Drag & Transform Editing
+**Goal**: Replace the photo scale slider with native Konva drag-to-position and transform handles for resize. Handles must be aspect-ratio locked and invisible in the downloaded PNG.
+**Depends on**: Phase 4
+**Requirements**: EDT-01, EDT-02, EDT-03
+**Success Criteria** (what must be TRUE):
+  1. User can drag the photo to reposition it on the canvas
+  2. Konva Transformer handles appear when photo is selected, allowing corner/edge resize
+  3. Resize is aspect-ratio locked (uniform scale only)
+  4. Transform handles are NOT visible in the downloaded PNG (hidden before export, restored after)
+  5. Photo slider is removed from the UI
+**Plans**: TBD
+
+**UI hint**: yes
+
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
@@ -94,6 +109,7 @@ Plans:
 | 2. Upload & Frame Selection | 2/2 | ✓ Complete | 2026-04-10 |
 | 3. Interactive Editing | 0/1 | Planned | - |
 | 4. Canvas Export | 1/1 | Complete   | 2026-04-11 |
+| 5. Konva Drag & Transform Editing | 0/? | Planning | - |
 
 ---
 *Roadmap created: 2026-04-10*
