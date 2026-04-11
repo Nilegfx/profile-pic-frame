@@ -571,6 +571,9 @@
           photoLayer.add(imageNode);
           state.photoImage = imageNode;
 
+          // Enable download button now that photo is loaded
+          updateDownloadState();
+
           // Reset slider to default scale (per D-08)
           document.getElementById('photo-scale').value = 1;
           state.photoScale = 1;
@@ -701,6 +704,56 @@
         dropdown.style.display = 'none';
         arrowBtn.setAttribute('aria-expanded', 'false');
       });
+    });
+
+    // === DOWNLOAD: Disabled state guard ===
+
+    // Enable/disable download button based on whether photo is uploaded
+    function updateDownloadState() {
+      const downloadBtn = document.getElementById('download-btn');
+      const arrowBtn = document.getElementById('download-arrow-btn');
+      const hasPhoto = state.photoImage !== null;
+
+      // Enable both buttons if photo exists, disable if no photo
+      downloadBtn.disabled = !hasPhoto;
+      arrowBtn.disabled = !hasPhoto;
+    }
+
+    // Initialize disabled state (no photo at startup)
+    updateDownloadState();
+
+    // === DOWNLOAD: Export handler ===
+
+    const downloadBtn = document.getElementById('download-btn');
+
+    downloadBtn.addEventListener('click', function() {
+      // Guard: should never fire when disabled, but double-check
+      if (!state.photoImage) {
+        console.warn('Download attempted with no photo loaded');
+        return;
+      }
+
+      // Get selected resolution (1 or 2)
+      const pixelRatio = state.selectedResolution;
+
+      // Export stage to PNG data URL at selected resolution
+      const dataURL = stage.toDataURL({
+        pixelRatio: pixelRatio,
+        mimeType: 'image/png',
+        quality: 1
+      });
+
+      // Create temporary <a> element to trigger download
+      const link = document.createElement('a');
+      link.download = 'profile.png'; // Fixed filename per D-06
+      link.href = dataURL;
+
+      // Trigger download (click and remove)
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      console.log('Downloaded profile.png at ' + pixelRatio + '× resolution');
     });
 
     // Log initialization success
