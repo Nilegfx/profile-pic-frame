@@ -561,6 +561,8 @@
           state.isLoadingPhoto = false;  // Clear flag
 
           if (!imageNode) {
+            state.photoImage = null; // Explicitly null the state
+            updateDownloadState();   // Disable download button
             alert('Failed to load image. Please try another file.');
             console.error('Image decode failed');
             event.target.value = '';
