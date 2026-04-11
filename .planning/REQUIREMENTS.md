@@ -29,9 +29,9 @@
 
 ### Download
 
-- [ ] **DWN-01**: User can download the final composited image as a PNG file
-- [ ] **DWN-02**: Downloaded image dimensions match the user's adjusted/zoomed state (proportions preserved)
-- [ ] **DWN-03**: All compositing happens client-side — no image data is sent to any server
+- [x] **DWN-01**: User can download the final composited image as a PNG file
+- [x] **DWN-02**: Downloaded image dimensions match the user's adjusted/zoomed state (proportions preserved)
+- [x] **DWN-03**: All compositing happens client-side — no image data is sent to any server
 
 ## v2 Requirements
 
@@ -77,9 +77,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDT-02 | Phase 3 | Pending |
 | EDT-03 | Phase 3 | Pending |
 | PRV-01 | Phase 3 | Pending |
-| DWN-01 | Phase 4 | Pending |
-| DWN-02 | Phase 4 | Pending |
-| DWN-03 | Phase 4 | Pending |
+| DWN-01 | Phase 4 | Complete |
+| DWN-02 | Phase 4 | Complete |
+| DWN-03 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 13 total

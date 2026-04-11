@@ -83,7 +83,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard
+- [x] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard
 
 **UI hint**: yes
 ## Progress
