@@ -635,6 +635,11 @@
           photoLayer.add(imageNode);
           state.photoImage = imageNode;
 
+          // D-04: Attach transformer (always-on when photo loaded)
+          state.transformer.nodes([imageNode]);
+          state.transformer.show();
+          transformerLayer.draw();
+
           // Enable download button now that photo is loaded
           updateDownloadState();
 
@@ -836,12 +841,20 @@
       // Get selected resolution (1 or 2)
       const pixelRatio = state.selectedResolution;
 
+      // D-12: Hide transformer before export
+      state.transformer.hide();
+      transformerLayer.hide();
+
       // Export stage to PNG data URL at selected resolution
       const dataURL = stage.toDataURL({
         pixelRatio: pixelRatio,
         mimeType: 'image/png',
         quality: 1
       });
+
+      // D-12: Restore transformer after export (toDataURL is synchronous)
+      state.transformer.show();
+      transformerLayer.show();
 
       // Create temporary <a> element to trigger download
       const link = document.createElement('a');
