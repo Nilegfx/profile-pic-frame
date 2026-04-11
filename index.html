@@ -160,6 +160,19 @@
       overflow: hidden;
     }
 
+    /* Cursor styles for draggable photo */
+    #stage-container canvas {
+      cursor: default;
+    }
+
+    #stage-container.photo-draggable canvas {
+      cursor: grab;
+    }
+
+    #stage-container.photo-dragging canvas {
+      cursor: grabbing;
+    }
+
     /* Spacer to push download button to the right */
     .spacer {
       flex-grow: 1;
@@ -387,7 +400,7 @@
 
     // Create two layers (photo below, frame above)
     const photoLayer = new Konva.Layer();
-    const frameLayer = new Konva.Layer();
+    const frameLayer = new Konva.Layer({ listening: false }); // Don't intercept pointer events
 
     stage.add(photoLayer);  // Add photo layer first (renders below)
     stage.add(frameLayer);  // Add frame layer second (renders above)
@@ -586,15 +599,37 @@
             state.photoImage.destroy();
           }
 
-          // D-01: Center at natural pixel size on 500×500 stage
+          // D-01: Scale photo to fit 90% of stage (450px max) to leave margin for transformer handles
+          const maxDimension = 450; // 90% of 500px stage
+          const naturalWidth = imageNode.width();
+          const naturalHeight = imageNode.height();
+          const scale = Math.min(maxDimension / naturalWidth, maxDimension / naturalHeight);
+
+          imageNode.scale({ x: scale, y: scale });
+
+          // Center on stage
           imageNode.position({ x: 250, y: 250 });
           imageNode.offset({
-            x: imageNode.width() / 2,
-            y: imageNode.height() / 2
+            x: naturalWidth / 2,
+            y: naturalHeight / 2
           });
 
           // D-06: Make photo draggable
           imageNode.draggable(true);
+
+          // Add cursor styling via container classes
+          const stageContainer = document.getElementById('stage-container');
+          stageContainer.classList.add('photo-draggable');
+
+          imageNode.on('dragstart', function() {
+            stageContainer.classList.add('photo-dragging');
+            stageContainer.classList.remove('photo-draggable');
+          });
+
+          imageNode.on('dragend', function() {
+            stageContainer.classList.remove('photo-dragging');
+            stageContainer.classList.add('photo-draggable');
+          });
 
           // D-07: Constrain drag so at least 50px of image remains visible
           imageNode.dragBoundFunc(function(pos) {
