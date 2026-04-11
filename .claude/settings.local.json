@@ -10,7 +10,20 @@
       "Bash(node:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Skill(gsd-code-review)",
+      "Skill(gsd-execute-phase)",
+      "Skill(gsd-verify-work)",
+      "Skill(gsd-plan-phase)",
+      "Skill(gsd-debug)",
+      "Skill(gsd-ui-phase)",
+      "Bash(ls /Users/amahmoud/Documents/development/personal/playgrounds/profile-pic-frame/.planning/phases/03-interactive-editing/*SUMMARY.md)",
+      "Bash(sed '/### Phase 4: Canvas Export/,/^\\\\*\\\\*UI hint\\\\*\\\\*/s/^\\\\*\\\\*Suggested plan breakdown.*$/Plans:\\\\n- [ ] 04-01-PLAN.md — Split-button Download control with resolution picker + PNG export handler + disabled state guard\\\\n\\\\n\\\\*\\\\*UI hint\\\\*\\\\*: yes/')",
+      "Bash(mv /tmp/roadmap_updated.md /Users/amahmoud/Documents/development/personal/playgrounds/profile-pic-frame/.planning/ROADMAP.md)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(awk ':*)",
+      "Bash(mv /tmp/roadmap_final.md .planning/ROADMAP.md)"
     ]
   }
 }

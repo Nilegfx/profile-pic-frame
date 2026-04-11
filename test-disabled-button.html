@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Disabled Button</title>
+</head>
+<body>
+  <button id="test-btn" disabled>Click Me</button>
+  <button id="enable-btn">Enable Button</button>
+
+  <script>
+    // Attach event listener to disabled button
+    const testBtn = document.getElementById('test-btn');
+    testBtn.addEventListener('click', function() {
+      console.log('Button clicked!');
+      alert('Button was clicked!');
+    });
+
+    // Enable button after 2 seconds
+    document.getElementById('enable-btn').addEventListener('click', function() {
+      // Get a NEW reference (simulating the shadowing pattern)
+      const testBtn2 = document.getElementById('test-btn');
+      testBtn2.disabled = false;
+      console.log('Button enabled via second reference');
+    });
+  </script>
+</body>
+</html>

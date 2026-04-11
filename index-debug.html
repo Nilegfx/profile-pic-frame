@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Debug Test</title>
+</head>
+<body>
+  <button id="download-arrow-btn" disabled>▾</button>
+  <button id="enable-btn">Enable Button</button>
+  <div id="status"></div>
+
+  <script>
+    // Attach event listener BEFORE enabling
+    const arrowBtn = document.getElementById('download-arrow-btn');
+
+    console.log('[INIT] Arrow button found:', arrowBtn);
+    console.log('[INIT] Arrow button disabled:', arrowBtn.disabled);
+
+    arrowBtn.addEventListener('click', function(event) {
+      console.log('[CLICK] Arrow button clicked!');
+      document.getElementById('status').textContent = 'CLICKED at ' + new Date().toISOString();
+    });
+
+    console.log('[INIT] Event listener attached');
+
+    // Enable button via a DIFFERENT reference (simulating updateDownloadState pattern)
+    document.getElementById('enable-btn').addEventListener('click', function() {
+      const arrowBtn2 = document.getElementById('download-arrow-btn');
+      arrowBtn2.disabled = false;
+      console.log('[ENABLE] Button enabled via second reference');
+      console.log('[ENABLE] First reference disabled:', arrowBtn.disabled);
+      console.log('[ENABLE] Second reference disabled:', arrowBtn2.disabled);
+      console.log('[ENABLE] Are they the same element?', arrowBtn === arrowBtn2);
+    });
+  </script>
+</body>
+</html>

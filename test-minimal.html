@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>Minimal Test</title></head>
+<body>
+  <button id="main-btn" disabled>Main Button</button>
+  <button id="arrow-btn" disabled>Arrow ▾</button>
+  <button id="enable-btn">Enable Both</button>
+  <div id="log"></div>
+
+  <script>
+    const log = document.getElementById('log');
+    function addLog(msg) {
+      log.innerHTML += msg + '<br>';
+      console.log(msg);
+    }
+
+    // Attach event listeners to disabled buttons
+    const mainBtn = document.getElementById('main-btn');
+    const arrowBtn = document.getElementById('arrow-btn');
+
+    mainBtn.addEventListener('click', function() {
+      addLog('[MAIN] Main button clicked!');
+    });
+
+    arrowBtn.addEventListener('click', function() {
+      addLog('[ARROW] Arrow button clicked!');
+    });
+
+    addLog('[INIT] Event listeners attached');
+
+    // Enable both using fresh references (like updateDownloadState)
+    document.getElementById('enable-btn').addEventListener('click', function() {
+      const mainBtn2 = document.getElementById('main-btn');
+      const arrowBtn2 = document.getElementById('arrow-btn');
+
+      mainBtn2.disabled = false;
+      arrowBtn2.disabled = false;
+
+      addLog('[ENABLE] Both buttons enabled');
+      addLog('[ENABLE] main-btn.disabled: ' + document.getElementById('main-btn').disabled);
+      addLog('[ENABLE] arrow-btn.disabled: ' + document.getElementById('arrow-btn').disabled);
+    });
+  </script>
+</body>
+</html>

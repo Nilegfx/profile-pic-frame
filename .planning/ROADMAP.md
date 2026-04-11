@@ -10,7 +10,7 @@
 - [x] **Phase 1: Foundation & UI Shell** - Single index.html with Konva stage, polished layout, and placeholder sections ✓
 - [x] **Phase 2: Upload & Frame Selection** - File upload with validation, frame picker, and basic layered preview on Konva stage ✓
 - [ ] **Phase 3: Interactive Editing** - Photo scale slider with centered aspect-ratio-locked image on Konva stage (frame fixed at 500×500)
-- [ ] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness
+- [x] **Phase 4: Canvas Export** - Download composited PNG via Konva's toDataURL with retina sharpness (completed 2026-04-11)
 
 ## Phase Details
 
@@ -93,7 +93,7 @@ Plans:
 | 1. Foundation & UI Shell | 1/1 | ✓ Complete | 2026-04-10 |
 | 2. Upload & Frame Selection | 2/2 | ✓ Complete | 2026-04-10 |
 | 3. Interactive Editing | 0/1 | Planned | - |
-| 4. Canvas Export | 0/1 | Not started | - |
+| 4. Canvas Export | 1/1 | Complete   | 2026-04-11 |
 
 ---
 *Roadmap created: 2026-04-10*

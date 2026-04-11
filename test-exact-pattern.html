@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exact Pattern Test</title>
+</head>
+<body>
+  <button id="arrow-btn" disabled>Arrow ▾</button>
+  <button id="trigger-btn">Simulate Photo Upload</button>
+  <div id="log"></div>
+
+  <script>
+    const state = { photoImage: null };
+
+    // Attach event listener to arrow button (like line 668)
+    const arrowBtn = document.getElementById('arrow-btn');
+    arrowBtn.addEventListener('click', function(event) {
+      document.getElementById('log').innerHTML += '[ARROW CLICKED]<br>';
+      console.log('[ARROW] Button clicked!');
+    });
+
+    // Define updateDownloadState function (like line 742)
+    function updateDownloadState() {
+      const arrowBtn = document.getElementById('arrow-btn');
+      const hasPhoto = state.photoImage !== null;
+      arrowBtn.disabled = !hasPhoto;
+      console.log('[UPDATE] arrowBtn.disabled set to:', arrowBtn.disabled);
+      document.getElementById('log').innerHTML += '[UPDATE] Arrow disabled: ' + arrowBtn.disabled + '<br>';
+    }
+
+    // Initialize (like line 757)
+    updateDownloadState();
+
+    // Simulate photo upload (like line 593)
+    document.getElementById('trigger-btn').addEventListener('click', function() {
+      state.photoImage = { fake: 'image' };
+      updateDownloadState();
+      document.getElementById('log').innerHTML += '[SIMULATED] Photo uploaded<br>';
+    });
+  </script>
+</body>
+</html>
