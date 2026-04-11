@@ -311,18 +311,6 @@
           <input type="file" id="photo-upload" accept="image/png, image/jpeg">
         </div>
 
-        <!-- Photo Size Slider -->
-        <div class="control-group">
-          <label for="photo-scale">Photo Size</label>
-          <input type="range" id="photo-scale" min="0.5" max="2" step="0.1" value="1">
-        </div>
-
-        <!-- Frame Size Slider -->
-        <div class="control-group" style="display:none">
-          <label for="frame-scale">Frame Size</label>
-          <input type="range" id="frame-scale" min="0.5" max="2" step="0.1" value="1">
-        </div>
-
         <!-- Spacer -->
         <div class="spacer"></div>
 
@@ -384,8 +372,6 @@
     const state = {
       photoImage: null,      // Konva.Image node for user's photo
       frameImage: null,      // Konva.Image node for selected frame
-      photoScale: 1,         // Scale factor for photo (0.5 to 2.0)
-      frameScale: 1,         // Scale factor for frame (0.5 to 2.0)
       selectedFrame: null,   // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
       isLoadingPhoto: false, // Prevent concurrent photo uploads
       selectedResolution: 1, // Export resolution: 1 (500px) or 2 (1000px)
@@ -643,12 +629,6 @@
           // Enable download button now that photo is loaded
           updateDownloadState();
 
-          // Reset slider to default scale (per D-08)
-          document.getElementById('photo-scale').value = 1;
-          state.photoScale = 1;
-          imageNode.scaleX(1);
-          imageNode.scaleY(1);
-
           photoLayer.draw();
 
           // Reset input to allow re-uploading same file
@@ -676,36 +656,6 @@
       };
 
       reader.readAsDataURL(file);
-    });
-
-    // Wire Photo Size slider for real-time scaling (Phase 3)
-    const photoSlider = document.getElementById('photo-scale');
-
-    photoSlider.addEventListener('input', function(event) {
-      const scale = parseFloat(event.target.value); // 0.5 to 2.0
-      const imageNode = state.photoImage;
-
-      // Guard: no photo loaded yet
-      if (!imageNode) return;
-
-      // Apply uniform scale (preserves aspect ratio per EDT-01)
-      imageNode.scaleX(scale);
-      imageNode.scaleY(scale);
-
-      // Recalculate offset to maintain centered position (per D-04)
-      const naturalWidth = imageNode.width();   // Original pixel width (no scale)
-      const naturalHeight = imageNode.height(); // Original pixel height (no scale)
-
-      imageNode.offset({
-        x: naturalWidth / 2,
-        y: naturalHeight / 2
-      });
-
-      // Update state (per D-06)
-      state.photoScale = scale;
-
-      // Redraw with frame-rate throttling (per D-10)
-      photoLayer.batchDraw();
     });
 
     // === DOWNLOAD: Resolution picker and dropdown logic ===
