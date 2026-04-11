@@ -388,7 +388,8 @@
       frameScale: 1,         // Scale factor for frame (0.5 to 2.0)
       selectedFrame: null,   // Which frame is active (null, 'frame-1', 'frame-2', 'frame-3', ...)
       isLoadingPhoto: false, // Prevent concurrent photo uploads
-      selectedResolution: 1  // Export resolution: 1 (500px) or 2 (1000px)
+      selectedResolution: 1, // Export resolution: 1 (500px) or 2 (1000px)
+      transformer: null      // Konva.Transformer node for interactive resize
     };
 
     // Initialize Konva Stage
@@ -404,6 +405,33 @@
 
     stage.add(photoLayer);  // Add photo layer first (renders below)
     stage.add(frameLayer);  // Add frame layer second (renders above)
+
+    // Transformer layer (renders above frame layer for handle visibility)
+    const transformerLayer = new Konva.Layer();
+    stage.add(transformerLayer);
+
+    // Create transformer with corner-only anchors and aspect-ratio locking
+    const transformer = new Konva.Transformer({
+      keepRatio: true,                          // D-02: Aspect ratio locked
+      enabledAnchors: [                         // D-01: Corner anchors only
+        'top-left', 'top-right',
+        'bottom-left', 'bottom-right'
+      ],
+      rotateEnabled: false,                     // No rotation for profile pics
+      anchorFill: '#FF6B35',                    // D-03: Orange anchor fill
+      anchorStroke: '#FFFFFF',                  // D-03: White stroke for contrast
+      anchorStrokeWidth: 2,
+      borderStroke: '#FF6B35',                  // D-03: Orange border
+      borderStrokeWidth: 2,
+      anchorSize: 10
+    });
+
+    transformerLayer.add(transformer);
+    state.transformer = transformer;             // Store reference in state
+
+    // Hide until photo loads (D-04: always-on when photo exists)
+    transformer.hide();
+    transformerLayer.draw();
 
     // Empty state: gray background
     const background = new Konva.Rect({
