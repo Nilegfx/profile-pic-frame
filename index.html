@@ -589,9 +589,20 @@
 
       reader.onerror = function(e) {
         state.isLoadingPhoto = false;  // Clear flag on error too
+
+        // Clear any partially loaded image
+        if (state.photoImage) {
+          state.photoImage.destroy();
+          state.photoImage = null;
+        }
+
+        // Restore empty state UI
+        background.visible(true);
+        placeholderText.visible(true);
+        photoLayer.draw();
+
         alert('Failed to load image. Please try another file.');
         console.error('FileReader error:', e);
-        // Reset input even on error
         event.target.value = '';
       };
 
