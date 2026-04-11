@@ -432,6 +432,19 @@
     transformer.hide();
     transformerLayer.draw();
 
+    // Click outside stage to deselect photo
+    document.addEventListener('click', function(event) {
+      const stageContainer = document.getElementById('stage-container');
+      const isClickInsideStage = stageContainer.contains(event.target);
+
+      // If click is outside stage and transformer is attached, deselect
+      if (!isClickInsideStage && state.transformer.nodes().length > 0) {
+        state.transformer.nodes([]);
+        state.transformer.hide();
+        transformerLayer.draw();
+      }
+    });
+
     // Empty state: gray background
     const background = new Konva.Rect({
       x: 0,
