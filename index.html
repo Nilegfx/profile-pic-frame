@@ -617,8 +617,8 @@
       const naturalHeight = imageNode.height(); // Original pixel height (no scale)
 
       imageNode.offset({
-        x: naturalWidth * scale / 2,
-        y: naturalHeight * scale / 2
+        x: naturalWidth / 2,
+        y: naturalHeight / 2
       });
 
       // Update state (per D-06)
