@@ -23,7 +23,10 @@
       "Bash(cat)",
       "Read(//tmp/**)",
       "Bash(awk ':*)",
-      "Bash(mv /tmp/roadmap_final.md .planning/ROADMAP.md)"
+      "Bash(mv /tmp/roadmap_final.md .planning/ROADMAP.md)",
+      "Skill(gsd-quick)",
+      "Bash(docker build:*)",
+      "Bash(docker buildx build:*)"
     ]
   }
 }

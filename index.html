@@ -160,19 +160,6 @@
       overflow: hidden;
     }
 
-    /* Cursor styles for draggable photo */
-    #stage-container canvas {
-      cursor: default;
-    }
-
-    #stage-container.photo-draggable {
-      cursor: grab;
-    }
-
-    #stage-container.photo-dragging {
-      cursor: grabbing;
-    }
-
     /* Spacer to push download button to the right */
     .spacer {
       flex-grow: 1;
@@ -422,6 +409,7 @@
       anchorFill: '#FF6B35',                    // D-03: Orange anchor fill
       anchorStroke: '#FFFFFF',                  // D-03: White stroke for contrast
       anchorStrokeWidth: 2,
+      anchorCornerRadius: 5,                    // Rounded corner handles
       borderStroke: '#FF6B35',                  // D-03: Orange border
       borderStrokeWidth: 2,
       anchorSize: 10
@@ -632,18 +620,31 @@
           // D-06: Make photo draggable
           imageNode.draggable(true);
 
-          // Add cursor styling via container classes
-          const stageContainer = document.getElementById('stage-container');
-          stageContainer.classList.add('photo-draggable');
+          // Set cursor styles via Konva API (CSS on container doesn't reach canvas)
+          const stageContainer = stage.container();
+
+          imageNode.on('mouseenter', function() {
+            stageContainer.style.cursor = 'grab';
+          });
+
+          imageNode.on('mouseleave', function() {
+            stageContainer.style.cursor = 'default';
+          });
 
           imageNode.on('dragstart', function() {
-            stageContainer.classList.add('photo-dragging');
-            stageContainer.classList.remove('photo-draggable');
+            stageContainer.style.cursor = 'grabbing';
           });
 
           imageNode.on('dragend', function() {
-            stageContainer.classList.remove('photo-dragging');
-            stageContainer.classList.add('photo-draggable');
+            stageContainer.style.cursor = 'grab';
+          });
+
+          // Click on photo to re-attach transformer after deselection
+          imageNode.on('click', function(e) {
+            e.cancelBubble = true; // Prevent document click listener from immediately hiding
+            state.transformer.nodes([imageNode]);
+            state.transformer.show();
+            transformerLayer.draw();
           });
 
           // D-07: Constrain drag so at least 50px of image remains visible
